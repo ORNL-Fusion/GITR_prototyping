@@ -6,7 +6,7 @@ Created on Fri Oct  8 15:34:09 2021
 @author: Alyssa
 """
 
-from boris_mini import *
+from boris_mini_uniform import *
 import numpy as np
 from numpy.linalg import norm, inv
 from matplotlib import pyplot as plt
@@ -22,7 +22,7 @@ m = 184*mp
 q = 4*qe
 
 # define B field
-Bmag = 1 #T
+Bmag = 2 #T
 #B = Bmag*np.array([0,0,-1])
 alpha = 20 * np.pi/180 #angle of incidence
 B = Bmag*np.array([np.cos(alpha),0,-np.sin(alpha)])
@@ -35,8 +35,8 @@ print('B before =', B)
 print('Bprime = ', Bprime)
 
 # define timing
-omega = np.linalg.norm(B)*q/m #plasma frequency
-t=np.arange(0,0.0001,1/(1e4*omega))
+omega = Bmag*q/m #plasma frequency
+t=np.arange(0,0.0001,1/(1e2*omega))
 
 # define E field
 E = np.array([5e2,1e3,1e3]) #V/m
@@ -48,10 +48,10 @@ print('Eprime =', Eprime)
 vmag=1e4
 v0 = np.array([vmag,0,0]) #m/s
 v0prime = np.dot(M1,v0)
-vE_prime = np.cross(Eprime,Bprime)/(np.linalg.norm(Bprime)**2)
+vE_prime = np.cross(Eprime,Bprime)/(Bmag**2)
 
 # calculate primed velocity
-vsign = Bprime[-1]/norm(Bprime)
+vsign = Bprime[-1]/Bmag
 vperp = v0prime - vE_prime
 vx_prime = -vsign*norm(vperp) * np.cos(omega*t) + vE_prime[0]
 vy_prime = -vsign*norm(vperp) * np.sin(omega*t) + vE_prime[1]
@@ -78,7 +78,7 @@ zzz = xyz_soln[:,2]
 
 # Add electrostatic force on particle by projecting E-field onto B-field and adding the parallel F_E
 Epara = np.dot(E,B)
-vpara = q*Epara*t/m
+vpara = q*Epara/Bmag * t/m
 vx += vpara * B[0]/Bmag
 vy += vpara * B[1]/Bmag
 vz += vpara * B[2]/Bmag
