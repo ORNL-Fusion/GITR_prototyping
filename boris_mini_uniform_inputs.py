@@ -39,7 +39,8 @@ omega = Bmag*q/m #plasma frequency
 t=np.arange(0,0.0001,1/(1e2*omega))
 
 # define E field
-E = np.array([5e2,1e3,1e3]) #V/m
+E = np.array([0, 0, 0])
+#E = np.array([5e2,1e3,1e3]) #V/m
 Eprime = np.dot(M1,E).astype('float16')
 print('E before =', E)
 print('Eprime =', Eprime)
@@ -136,6 +137,14 @@ fig,ax = plt.subplots(1)
 ax.plot(t,zzz, t,xyz1[:,2], t,xyz2[:,2])
 ax.set_title("z(t)")
 plt.legend(['analytic','boris','simple push'])
+
+#%% 3D plot
+fig = plt.figure()
+ax = fig.add_subplot(projection='3d')
+ax.plot(xxx, yyy, zzz)
+ax.plot(xyz1[:,0], xyz1[:,1], xyz1[:,2])
+ax.set_title("position")
+plt.legend(['analytic','boris'])
 
 #%% find error
 
