@@ -22,7 +22,7 @@ m = 184*mp
 q = 4*qe
 
 # define B field
-Bmag = 2 #T
+Bmag = 1 #T
 #B = Bmag*np.array([0,0,-1])
 alpha = 20 * np.pi/180 #angle of incidence
 B = Bmag*np.array([np.cos(alpha),0,-np.sin(alpha)])
@@ -76,7 +76,7 @@ xxx = xyz_soln[:,0]
 yyy = xyz_soln[:,1]
 zzz = xyz_soln[:,2]
 
-# Add electrostatic force on particle by projecting E-field onto B-field and adding the parallel F_E
+# add electrostatic force on particle by projecting E-field onto B-field and adding the parallel F_E
 Epara = np.dot(E,B)
 vpara = q*Epara/Bmag * t/m
 vx += vpara * B[0]/Bmag
@@ -86,6 +86,11 @@ vz += vpara * B[2]/Bmag
 xxx += vpara * B[0]/Bmag * t/2
 yyy += vpara * B[1]/Bmag * t/2
 zzz += vpara * B[2]/Bmag * t/2
+
+print("\n")
+print("velocity and position initial conditions")
+print("v0 = [", vx[0], vy[0], vz[0], "]")
+print("pos0 = [", xxx[0], yyy[0], zzz[0], "]")
 
 # run boris and simple pushers using same initial velocity as analytic example
 v0 = np.array([vx[0],vy[0],vz[0]])
@@ -140,6 +145,8 @@ boris_xyz_error = np.array([rmse(xyz1[:,0],xxx), rmse(xyz1[:,1],yyy), rmse(xyz1[
 simple_v_error = np.array([rmse(vout2[:,0],vx), rmse(vout2[:,1],vy), rmse(vout2[:,2],vz)])
 simple_xyz_error = np.array([rmse(xyz2[:,0],xxx), rmse(xyz2[:,1],yyy), rmse(xyz2[:,2],zzz)])
 
+print("\n")
+print("rmse errors")
 print("boris v rmse =", boris_v_error)
 print("boris xyz rmse =", boris_xyz_error)
 print("simple v rmse =", simple_v_error) 
