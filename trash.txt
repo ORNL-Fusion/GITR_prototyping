@@ -1,3 +1,0 @@
-initial file to allow commits
-
-check commit privileges
