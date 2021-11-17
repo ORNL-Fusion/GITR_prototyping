@@ -6,7 +6,8 @@ Created on Fri Oct  8 15:34:09 2021
 @author: Alyssa
 """
 
-from boris_mini_uniform import *
+from file_map import *
+from complex_boris_motion import *
 import numpy as np
 from numpy.linalg import norm, inv
 from matplotlib import pyplot as plt
@@ -39,8 +40,8 @@ omega = Bmag*q/m #plasma frequency
 t=np.arange(0,0.0001,1/(1e2*omega))
 
 # define E field
-E = np.array([0, 0, 0])
-#E = np.array([5e2,1e3,1e3]) #V/m
+#E = np.array([0, 0, 0])
+E = np.array([5e2,1e3,1e3]) #V/m
 Eprime = np.dot(M1,E).astype('float16')
 print('E before =', E)
 print('Eprime =', Eprime)
@@ -98,6 +99,21 @@ v0 = np.array([vx[0],vy[0],vz[0]])
 vout1, xyz1 = ParticlePusher(t, m,q, v0,E,B)
 vout2, xyz2 = SimplePusher(t, m,q, v0,E,B)
 
+# write analytic data to csv file
+write_data_file( t, vx, vy, vz, xxx, yyy, zzz, analytic_python_file_prefix )
+
+# write boris algorithm data to csv file
+write_data_file( t, \
+                 vout1[:,0], vout1[:,1], vout1[:,2], \
+                 xyz1[:,0], xyz1[:,1], xyz1[:,2], \
+                 boris_python_file_prefix )
+
+# write simple push data to a csv file
+write_data_file( t, \
+                 vout2[:,0], vout2[:,1], vout2[:,2], \
+                 xyz2[:,0], xyz2[:,1], xyz2[:,2], \
+                 simple_pusher_file_prefix )
+
 #%% plot vx(t),  vy(t), and vz(t)
 
 # vx(t)
@@ -105,6 +121,7 @@ fig,ax = plt.subplots(1)
 ax.plot(t,vx, t,vout1[:,0], t,vout2[:,0])
 ax.set_title("vx(t)")
 plt.legend(['analytic','boris','simple push'])
+plt.show()
 
 # vy(t)
 fig,ax = plt.subplots(1)
