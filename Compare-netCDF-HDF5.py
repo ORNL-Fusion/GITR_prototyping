@@ -13,7 +13,7 @@ def nc_initialize():
 
 def ComparePositionsData():
     np, Dataset, example = nc_initialize()
-    ncFile = '/Users/Alyssa/Dev/pyGITR/examples/' + example + '/output/positions.nc'
+    ncFile = '../pyGITR/examples/' + example + '/output/positions.nc'
     ncData = Dataset(ncFile, "r", format="NETCDF4")
     
     nc_x = ncData.variables['x'][:]
@@ -37,7 +37,7 @@ def ComparePositionsData():
 
 def CompareSurfaceData():
     np, Dataset, example = nc_initialize()
-    ncFile = '/Users/Alyssa/Dev/pyGITR/examples/' + example + '/output/surface.nc'
+    ncFile = '../pyGITR/examples/' + example + '/output/surface.nc'
     ncData = Dataset(ncFile, "r", format="NETCDF4")
     
     nc_GD = ncData.variables['grossDeposition'][:]
@@ -60,7 +60,7 @@ def CompareSurfaceData():
 
 def CompareHistoryData():
     np, Dataset, example = nc_initialize()
-    ncFile = '/Users/Alyssa/Dev/pyGITR/examples/' + example + '/output/history.nc'
+    ncFile = '../pyGITR/examples/' + example + '/output/history.nc'
     ncData = Dataset(ncFile, "r", format="NETCDF4")
 
     nc_x = ncData.variables['x'][:]
