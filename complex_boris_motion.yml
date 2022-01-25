@@ -1,0 +1,20 @@
+# We will want to create a prefix - can a --prefix option be passed in addition to 
+# these? Put it all into a script
+#  - python=3.10.0
+#  - numpy=1.21.2
+#  - matplotlib=3.4.3
+#  - scipy=1.7.2
+
+name: complex_boris_motion
+
+channels:
+
+  - conda-forge
+  - defaults
+
+dependencies:
+
+  - python
+  - numpy
+  - matplotlib
+  - scipy

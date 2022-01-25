@@ -6,20 +6,25 @@ Created on Fri Oct  8 15:34:09 2021
 @author: Alyssa
 """
 
-from boris_mini_uniform import *
+from file_map import *
+from complex_boris_motion import *
 import numpy as np
 from numpy.linalg import norm, inv
 from matplotlib import pyplot as plt
 
 #%% example inputs
 
-mp = 1.6605E-27
-me = 9.109383701528e-31
-qe = 1.602176634e-19
+# example constants
+dalton = 1.660539066605e-27 
+
+electron_volt = 1.602176634e-19
+
 
 # assume tungsten +4
-m = 184*mp
-q = 4*qe
+ion_charge = 4
+amu = 184
+m = amu * dalton
+q = ion_charge * electron_volt
 
 # define B field
 Bmag = 1 #T
@@ -39,8 +44,8 @@ omega = Bmag*q/m #plasma frequency
 t=np.arange(0,0.0001,1/(1e2*omega))
 
 # define E field
-E = np.array([0, 0, 0])
-#E = np.array([5e2,1e3,1e3]) #V/m
+#E = np.array([0, 0, 0])
+E = np.array([5e2,1e3,1e3]) #V/m
 Eprime = np.dot(M1,E).astype('float16')
 print('E before =', E)
 print('Eprime =', Eprime)
@@ -98,6 +103,21 @@ v0 = np.array([vx[0],vy[0],vz[0]])
 vout1, xyz1 = ParticlePusher(t, m,q, v0,E,B)
 vout2, xyz2 = SimplePusher(t, m,q, v0,E,B)
 
+# write analytic data to csv file
+write_data_file( t, vx, vy, vz, xxx, yyy, zzz, analytic_python_file_prefix )
+
+# write boris algorithm data to csv file
+write_data_file( t, \
+                 vout1[:,0], vout1[:,1], vout1[:,2], \
+                 xyz1[:,0], xyz1[:,1], xyz1[:,2], \
+                 boris_python_file_prefix )
+
+# write simple push data to a csv file
+write_data_file( t, \
+                 vout2[:,0], vout2[:,1], vout2[:,2], \
+                 xyz2[:,0], xyz2[:,1], xyz2[:,2], \
+                 simple_pusher_file_prefix )
+
 #%% plot vx(t),  vy(t), and vz(t)
 
 # vx(t)
@@ -105,6 +125,7 @@ fig,ax = plt.subplots(1)
 ax.plot(t,vx, t,vout1[:,0], t,vout2[:,0])
 ax.set_title("vx(t)")
 plt.legend(['analytic','boris','simple push'])
+plt.show()
 
 # vy(t)
 fig,ax = plt.subplots(1)
@@ -156,7 +177,16 @@ simple_xyz_error = np.array([rmse(xyz2[:,0],xxx), rmse(xyz2[:,1],yyy), rmse(xyz2
 
 print("\n")
 print("rmse errors")
-print("boris v rmse =", boris_v_error)
-print("boris xyz rmse =", boris_xyz_error)
-print("simple v rmse =", simple_v_error) 
-print("simple xyz rmse =", simple_xyz_error)
+print("boris v_x = ", boris_v_error[0])
+print("boris v_y = ", boris_v_error[1])
+print("boris v_z = ", boris_v_error[2])
+print("boris x rmse = ", boris_xyz_error[0])
+print("boris y rmse = ", boris_xyz_error[1])
+print("boris z rmse = ", boris_xyz_error[2])
+print("simple v_x rmse = ", simple_v_error[0]) 
+print("simple v_y rmse = ", simple_v_error[1]) 
+print("simple v_z rmse = ", simple_v_error[2]) 
+print("simple xyz rmse = ", simple_xyz_error)
+print("simple x rmse = ", simple_xyz_error[0])
+print("simple y rmse = ", simple_xyz_error[1])
+print("simple z rmse = ", simple_xyz_error[2])
