@@ -14,13 +14,17 @@ from matplotlib import pyplot as plt
 
 #%% example inputs
 
-mp = 1.6605E-27
-me = 9.109383701528e-31
-qe = 1.602176634e-19
+# example constants
+dalton = 1.660539066605e-27 
+
+electron_volt = 1.602176634e-19
+
 
 # assume tungsten +4
-m = 184*mp
-q = 4*qe
+ion_charge = 4
+amu = 184
+m = amu * dalton
+q = ion_charge * electron_volt
 
 # define B field
 Bmag = 1 #T
@@ -173,7 +177,16 @@ simple_xyz_error = np.array([rmse(xyz2[:,0],xxx), rmse(xyz2[:,1],yyy), rmse(xyz2
 
 print("\n")
 print("rmse errors")
-print("boris v rmse =", boris_v_error)
-print("boris xyz rmse =", boris_xyz_error)
-print("simple v rmse =", simple_v_error) 
-print("simple xyz rmse =", simple_xyz_error)
+print("boris v_x = ", boris_v_error[0])
+print("boris v_y = ", boris_v_error[1])
+print("boris v_z = ", boris_v_error[2])
+print("boris x rmse = ", boris_xyz_error[0])
+print("boris y rmse = ", boris_xyz_error[1])
+print("boris z rmse = ", boris_xyz_error[2])
+print("simple v_x rmse = ", simple_v_error[0]) 
+print("simple v_y rmse = ", simple_v_error[1]) 
+print("simple v_z rmse = ", simple_v_error[2]) 
+print("simple xyz rmse = ", simple_xyz_error)
+print("simple x rmse = ", simple_xyz_error[0])
+print("simple y rmse = ", simple_xyz_error[1])
+print("simple z rmse = ", simple_xyz_error[2])

@@ -37,6 +37,9 @@ def ParticlePusher(t, m,q, v0,E,B):
     w2 = dt * q / (2. * m);
     w3 = 2 / (1 + w2**2 * Bmag**2)
 
+    # Captain! Print dt, w1, and w2 * w3 and in GITR as dt, q_prime, coeff
+    print( f'dt: {dt} q_prime: { w2 } coeff: { w2 * w3 } E: {E} B: {B}' )
+
     #define output history arrays
     vhist = np.zeros([len(t), len(v0)])
     v = v0
